@@ -31,7 +31,7 @@ const LIST_OPTIONS = [
   { 
     key: 'Network' as ArmiListFilter, 
     label: 'Network', 
-    description: 'Professional contacts',
+    description: 'Professional Contacts',
     icon: Briefcase,
     color: '#059669' 
   },
