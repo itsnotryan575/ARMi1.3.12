@@ -40,11 +40,11 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="scheduler"
+          name="reminders"
           options={{
-            title: 'Scheduler',
+            title: 'Reminders',
             tabBarIcon: ({ size, color }) => (
-              <MessageSquareText size={size} color={color} />
+              <Bell size={size} color={color} />
             ),
           }}
         />
@@ -58,11 +58,11 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="reminders"
+          name="scheduler"
           options={{
-            title: 'Reminders',
+            title: 'Scheduler',
             tabBarIcon: ({ size, color }) => (
-              <Bell size={size} color={color} />
+              <MessageSquareText size={size} color={color} />
             ),
           }}
         />
