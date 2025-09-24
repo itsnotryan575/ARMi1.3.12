@@ -118,6 +118,7 @@ export default function ProfileSettings() {
           <ArrowLeft size={24} color={theme.text} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: theme.text }]}>Profile</Text>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>Account</Text>
         <View style={styles.headerSpacer} />
       </View>
 

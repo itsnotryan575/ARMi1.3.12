@@ -19,10 +19,10 @@ export default function SettingsScreen() {
   };
 
   const settingsItems = [
-    { icon: User, title: 'Profile', subtitle: 'Manage your account', action: 'profile' },
+    { icon: User, title: 'Account', subtitle: 'Manage your account', action: 'profile' },
+    { icon: MessageSquare, title: 'Send Feedback', subtitle: 'Report bugs, suggest features', action: 'feedback' },
     { icon: Bell, title: 'Notifications', subtitle: 'Push notifications and alerts', action: 'notifications' },
     { icon: Share, title: 'Share Studio', subtitle: 'Create and share your ARMi cards', action: 'share' },
-    { icon: MessageSquare, title: 'Send Feedback', subtitle: 'Report bugs, suggest features', action: 'feedback' },
     { icon: Palette, title: 'Appearance', subtitle: 'Theme and display options', action: 'appearance' },
     { icon: Info, title: 'About', subtitle: 'App version and information', action: 'about' },
     { icon: LogOut, title: 'Sign Out', subtitle: 'Sign out of your account', action: 'signout' },
