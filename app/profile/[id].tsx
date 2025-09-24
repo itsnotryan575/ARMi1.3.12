@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Image, Linking, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
-import { ArrowLeft, CreditCard as Edit, User, Calendar, MapPin, Heart, Briefcase, Phone, Mail, Tag } from 'lucide-react-native';
+import { ArrowLeft, CreditCard as Edit, User, Calendar, MapPin, Heart, Briefcase, Phone, Mail, Tag, ExternalLink } from 'lucide-react-native';
 import { DatabaseService } from '../../services/DatabaseService';
 import { format, parseISO } from 'date-fns';
 import { useTheme } from '@/context/ThemeContext';
@@ -67,6 +67,57 @@ export default function ProfileDetail() {
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Call', onPress: () => Linking.openURL(`tel:${phone}`) }
+      ]
+    );
+  };
+
+  const handleEmailPress = (email: string) => {
+    Alert.alert(
+      'Email',
+      `Would you like to email ${email}?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Email', onPress: () => Linking.openURL(`mailto:${email}`) }
+      ]
+    );
+  };
+
+  const handleSocialPress = (platform: string, username: string) => {
+    let url = '';
+    let displayName = '';
+    
+    switch (platform) {
+      case 'instagram':
+        url = `https://instagram.com/${username.replace('@', '')}`;
+        displayName = 'Instagram';
+        break;
+      case 'twitter':
+        url = `https://twitter.com/${username.replace('@', '')}`;
+        displayName = 'X (Twitter)';
+        break;
+      case 'tiktok':
+        url = `https://tiktok.com/@${username.replace('@', '')}`;
+        displayName = 'TikTok';
+        break;
+      case 'facebook':
+        url = `https://facebook.com/${username}`;
+        displayName = 'Facebook';
+        break;
+      case 'snapchat':
+        // Snapchat doesn't have direct web links to profiles, so we'll show an alert
+        Alert.alert('Snapchat', `Username: ${username}\n\nSnapchat profiles can't be opened directly from the web.`);
+        return;
+      default:
+        Alert.alert('Error', 'Unsupported social platform');
+        return;
+    }
+    
+    Alert.alert(
+      `Open ${displayName}`,
+      `Would you like to open ${username}'s ${displayName} profile?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Open', onPress: () => Linking.openURL(url) }
       ]
     );
   };
@@ -216,10 +267,10 @@ export default function ProfileDetail() {
             )}
             
             {profile.email && (
-              <View style={styles.infoItem}>
+              <TouchableOpacity style={styles.infoItem} onPress={() => handleEmailPress(profile.email)}>
                 <Mail size={20} color={theme.primary} style={styles.infoIcon} />
                 <Text style={[styles.infoText, { color: theme.text }]}>{profile.email}</Text>
-              </View>
+              </TouchableOpacity>
             )}
           </View>
         )}
@@ -328,53 +379,68 @@ export default function ProfileDetail() {
             <Text style={[styles.sectionTitle, { color: theme.text }]}>Socials</Text>
             
             {profile.instagram && (
-              <View style={styles.infoItem}>
+              <TouchableOpacity style={styles.infoItem} onPress={() => handleSocialPress('instagram', profile.instagram)}>
                 <User size={20} color="#E4405F" style={styles.infoIcon} />
                 <View style={styles.infoContent}>
                   <Text style={[styles.infoLabel, { color: theme.primary }]}>Instagram:</Text>
-                  <Text style={[styles.infoText, { color: theme.text }]}>{profile.instagram}</Text>
+                  <View style={styles.socialLinkContainer}>
+                    <Text style={[styles.infoText, { color: theme.text }]}>{profile.instagram}</Text>
+                    <ExternalLink size={14} color={theme.primary} style={styles.externalLinkIcon} />
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
             
             {profile.snapchat && (
-              <View style={styles.infoItem}>
+              <TouchableOpacity style={styles.infoItem} onPress={() => handleSocialPress('snapchat', profile.snapchat)}>
                 <User size={20} color="#FFFC00" style={styles.infoIcon} />
                 <View style={styles.infoContent}>
                   <Text style={[styles.infoLabel, { color: theme.primary }]}>Snapchat:</Text>
-                  <Text style={[styles.infoText, { color: theme.text }]}>{profile.snapchat}</Text>
+                  <View style={styles.socialLinkContainer}>
+                    <Text style={[styles.infoText, { color: theme.text }]}>{profile.snapchat}</Text>
+                    <ExternalLink size={14} color={theme.primary} style={styles.externalLinkIcon} />
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
             
             {profile.twitter && (
-              <View style={styles.infoItem}>
+              <TouchableOpacity style={styles.infoItem} onPress={() => handleSocialPress('twitter', profile.twitter)}>
                 <User size={20} color="#1DA1F2" style={styles.infoIcon} />
                 <View style={styles.infoContent}>
                   <Text style={[styles.infoLabel, { color: theme.primary }]}>X (Twitter):</Text>
-                  <Text style={[styles.infoText, { color: theme.text }]}>{profile.twitter}</Text>
+                  <View style={styles.socialLinkContainer}>
+                    <Text style={[styles.infoText, { color: theme.text }]}>{profile.twitter}</Text>
+                    <ExternalLink size={14} color={theme.primary} style={styles.externalLinkIcon} />
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
             
             {profile.tiktok && (
-              <View style={styles.infoItem}>
+              <TouchableOpacity style={styles.infoItem} onPress={() => handleSocialPress('tiktok', profile.tiktok)}>
                 <User size={20} color="#000000" style={styles.infoIcon} />
                 <View style={styles.infoContent}>
                   <Text style={[styles.infoLabel, { color: theme.primary }]}>TikTok:</Text>
-                  <Text style={[styles.infoText, { color: theme.text }]}>{profile.tiktok}</Text>
+                  <View style={styles.socialLinkContainer}>
+                    <Text style={[styles.infoText, { color: theme.text }]}>{profile.tiktok}</Text>
+                    <ExternalLink size={14} color={theme.primary} style={styles.externalLinkIcon} />
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
             
             {profile.facebook && (
-              <View style={styles.infoItem}>
+              <TouchableOpacity style={styles.infoItem} onPress={() => handleSocialPress('facebook', profile.facebook)}>
                 <User size={20} color="#1877F2" style={styles.infoIcon} />
                 <View style={styles.infoContent}>
                   <Text style={[styles.infoLabel, { color: theme.primary }]}>Facebook:</Text>
-                  <Text style={[styles.infoText, { color: theme.text }]}>{profile.facebook}</Text>
+                  <View style={styles.socialLinkContainer}>
+                    <Text style={[styles.infoText, { color: theme.text }]}>{profile.facebook}</Text>
+                    <ExternalLink size={14} color={theme.primary} style={styles.externalLinkIcon} />
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
           </View>
         )}
@@ -485,6 +551,13 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 16,
+  },
+  socialLinkContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  externalLinkIcon: {
+    marginLeft: 8,
   },
   loadingContainer: {
     flex: 1,
